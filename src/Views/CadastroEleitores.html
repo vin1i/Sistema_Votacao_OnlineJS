@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Eleitores</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Cadastro de Eleitores</h1>
+      <form id="cadastroForm" method="POST">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required />
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" required />
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco" required />
+
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required />
+
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+    <script src="../public/script.js"></script>
+  </body>
+</html>
