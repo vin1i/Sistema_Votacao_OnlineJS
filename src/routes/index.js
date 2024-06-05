@@ -76,8 +76,8 @@ router.post('/chapas', authenticateToken, chapaController.create);
 router.get('/chapas', authenticateToken, chapaController.getAll);
 
 // Rotas para Eleitores
-router.post('/eleitores', eleitorController.create);
-router.get('/eleitores', eleitorController.getAll);
+router.post('/eleitores', authenticateToken, eleitorController.create);
+router.get('/eleitores', authenticateToken, eleitorController.getAll);
 
 // Rotas para CandidatoChapa
 router.post('/candidatoChapas', authenticateToken, candidatoChapaController.create);
