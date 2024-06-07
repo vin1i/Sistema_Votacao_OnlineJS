@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Eleitores</title>
-    <link rel="stylesheet" href="../public/Css/Style.css" />
+    <link rel="stylesheet" href="../public/Css/CadastroEleitores.css" />
   </head>
   <body>
     <div class="container">
@@ -14,7 +14,7 @@
         <input type="text" id="nome" name="nome" required />
 
         <label for="cpf">CPF:</label>
-        <input type="text" id="cpf" name="cpf" required />
+        <input type="text" id="cpf" name="cpf" maxlength="14" required />
 
         <label for="endereco">Endereço:</label>
         <input type="text" id="endereco" name="endereco" required />
@@ -25,6 +25,6 @@
         <button type="submit">Cadastrar</button>
       </form>
     </div>
-    <script src="../public/script.js"></script>
+    <script src="../public/scripts/scriptsEleitor.js"></script>
   </body>
 </html>
