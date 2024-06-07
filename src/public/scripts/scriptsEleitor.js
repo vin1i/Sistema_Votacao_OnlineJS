@@ -7,17 +7,15 @@ document.getElementById('cpf').addEventListener('input', function (e) {
     e.target.value = value;
     console.log('Valor do CPF:', value);
 });
+// No MySQL o campo CPF foi definido como " Varchar(14)", recebe até 14 caracteres, porque o FrontEnd foi definido para formatar o CPF automaticamente com  pontos e traço. ex: (123.456.789-11)
 
 document.getElementById('cadastroForm').addEventListener('submit', function (e) {
     e.preventDefault();
-    console.log('Formulário de cadastro enviado!');
 
     const nome = document.getElementById('nome').value;
     const cpf = document.getElementById('cpf').value;
     const endereco = document.getElementById('endereco').value;
     const senha = document.getElementById('senha').value;
-
-    console.log('Dados do formulário:', { nome, cpf, endereco, senha });
 
     fetch('http://localhost:5000/api/eleitores', {
         method: 'POST',
@@ -27,7 +25,6 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
         body: JSON.stringify({ nome, cpf, endereco, senha }),
     })
         .then(response => {
-            console.log('Resposta do servidor:', response);
             if (response.ok) {
                 return response.json();
             } else {
@@ -35,7 +32,6 @@ document.getElementById('cadastroForm').addEventListener('submit', function (e) 
             }
         })
         .then(data => {
-            console.log('Resposta JSON:', data);
             alert('Eleitor cadastrado com sucesso!');
             // Limpar os campos do formulário
             document.getElementById('cadastroForm').reset();
