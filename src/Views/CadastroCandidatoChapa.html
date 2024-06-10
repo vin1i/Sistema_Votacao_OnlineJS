@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Candidato na Chapa</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Cadastro de Candidato na Chapa</h1>
+    <form id="candidatoChapaForm">
+      <label for="chapa">Chapa:</label>
+      <select id="chapa" name="chapa" required>
+        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
+      </select>
+
+      <label for="cargo">Cargo:</label>
+      <select id="cargo" name="cargo" required>
+        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
+      </select>
+
+      <label for="candidato">Candidato:</label>
+      <select id="candidato" name="candidato" required>
+        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
+      </select>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the list of chapas from the backend
+        fetch("http://localhost:5000/api/chapas")
+          .then((response) => response.json())
+          .then((data) => {
+            const chapaSelect = document.getElementById("chapa");
+            data.forEach((chapa) => {
+              const option = document.createElement("option");
+              option.value = chapa.id;
+              option.textContent = chapa.nome;
+              chapaSelect.appendChild(option);
+            });
+          });
+
+        // Fetch the list of cargos from the backend
+        fetch("http://localhost:5000/api/cargos")
+          .then((response) => response.json())
+          .then((data) => {
+            const cargoSelect = document.getElementById("cargo");
+            data.forEach((cargo) => {
+              const option = document.createElement("option");
+              option.value = cargo.id;
+              option.textContent = cargo.nome;
+              cargoSelect.appendChild(option);
+            });
+          });
+
+        // Fetch the list of candidatos from the backend
+        fetch("http://localhost:5000/api/candidatos")
+          .then((response) => response.json())
+          .then((data) => {
+            const candidatoSelect = document.getElementById("candidato");
+            data.forEach((candidato) => {
+              const option = document.createElement("option");
+              option.value = candidato.id;
+              option.textContent = candidato.nome;
+              candidatoSelect.appendChild(option);
+            });
+          });
+
+        // Handle form submission
+        document
+          .getElementById("candidatoChapaForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const chapa = document.getElementById("chapa").value;
+            const cargo = document.getElementById("cargo").value;
+            const candidato = document.getElementById("candidato").value;
+
+            fetch("http://localhost:5000/api/candidatoschapas", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                chapa_id: chapa,
+                cargo_id: cargo,
+                candidato_id: candidato,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                alert("Candidato cadastrado na chapa com sucesso!");
+                // Clear the form
+                document.getElementById("candidatoChapaForm").reset();
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Erro ao cadastrar candidato na chapa.");
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

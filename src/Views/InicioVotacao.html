@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Início de Votação</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Início de Votação</h1>
+    <form id="inicioVotacaoForm">
+      <label for="eleicao">Eleição:</label>
+      <select id="eleicao" name="eleicao" required>
+        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
+      </select>
+
+      <label for="dataHoraInicio">Data e Hora de Início:</label>
+      <input
+        type="datetime-local"
+        id="dataHoraInicio"
+        name="dataHoraInicio"
+        required
+      />
+
+      <button type="submit">Iniciar Votação</button>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the list of elections from the backend
+        fetch("http://localhost:5000/api/eleicoes")
+          .then((response) => response.json())
+          .then((data) => {
+            const eleicaoSelect = document.getElementById("eleicao");
+            data.forEach((eleicao) => {
+              const option = document.createElement("option");
+              option.value = eleicao.id;
+              option.textContent = eleicao.nome;
+              eleicaoSelect.appendChild(option);
+            });
+          });
+
+        // Handle form submission
+        document
+          .getElementById("inicioVotacaoForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const eleicao = document.getElementById("eleicao").value;
+            const dataHoraInicio =
+              document.getElementById("dataHoraInicio").value;
+
+            fetch("http://localhost:5000/api/votacoes/iniciar", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                eleicao_id: eleicao,
+                data_hora_inicio: dataHoraInicio,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                alert("Votação iniciada com sucesso!");
+                // Clear the form
+                document.getElementById("inicioVotacaoForm").reset();
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Erro ao iniciar a votação.");
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

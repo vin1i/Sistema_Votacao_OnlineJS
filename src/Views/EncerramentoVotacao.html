@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Encerramento de Votação</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        text-align: center;
+        color: #333;
+      }
+
+      label {
+        display: block;
+        margin-top: 10px;
+        color: #555;
+      }
+
+      select,
+      input[type="datetime-local"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 20px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Encerramento de Votação</h2>
+      <form id="encerramentoVotacaoForm">
+        <label for="eleicao">Eleição:</label>
+        <select id="eleicao" name="eleicao" required>
+          <option value="">Selecione a eleição</option>
+          <!-- Opções de eleições carregadas dinamicamente -->
+        </select>
+
+        <label for="dataHoraEncerramento">Data e Hora de Encerramento:</label>
+        <input
+          type="datetime-local"
+          id="dataHoraEncerramento"
+          name="dataHoraEncerramento"
+          required
+        />
+
+        <button type="submit">Encerrar Votação</button>
+      </form>
+    </div>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>

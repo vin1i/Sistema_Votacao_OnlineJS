@@ -1,8 +1,8 @@
 const Eleicao = require('../models/eleicao');
 
 exports.create = (req, res) => {
-    const { nome, descricao } = req.body;
-    Eleicao.create({ nome, descricao }, (err, id) => {
+    const { data, nome, local, hora_inicial, hora_final } = req.body;
+    Eleicao.create({ data, nome, local, hora_inicial, hora_final }, (err, id) => {
         if (err) {
             return res.status(500).send(err);
         }

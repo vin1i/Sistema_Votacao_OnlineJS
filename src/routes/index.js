@@ -68,8 +68,8 @@ router.post('/cargos', authenticateToken, cargoController.create);
 router.get('/cargos', authenticateToken, cargoController.getAll);
 
 // Rotas para Eleicoes
-router.post('/eleicoes', authenticateToken, eleicaoController.create);
-router.get('/eleicoes', authenticateToken, eleicaoController.getAll);
+router.post('/eleicoes', eleicaoController.create);
+router.get('/eleicoes', eleicaoController.getAll);
 
 // Rotas para Chapas
 router.post('/chapas', authenticateToken, chapaController.create);

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../public/Css/FormularioEleicoes.css" />
+    <title>Cadastro de Eleição</title>
+  </head>
+  <body>
+    <div>
+      <h1 id="titulo">Cadastro de Eleição</h1>
+      <p id="subtitulo">Informe os detalhes da eleição</p>
+      <br />
+    </div>
+
+    <form id="cadastroEleicao">
+      <div class="campo">
+        <label for="nome">Nome da Eleição:</label>
+        <input type="text" id="nome" name="nome" required />
+      </div>
+
+      <div class="campo">
+        <label for="data">Data da Eleição:</label>
+        <input type="date" id="data" name="data" required />
+      </div>
+
+      <div class="campo">
+        <label for="local">Local da Eleição:</label>
+        <input type="text" id="local" name="local" required />
+      </div>
+
+      <div class="campo">
+        <label for="hora_inicial">Hora Inicial:</label>
+        <input type="time" id="hora_inicial" name="hora_inicial" required />
+      </div>
+
+      <div class="campo">
+        <label for="hora_final">Hora Final:</label>
+        <input type="time" id="hora_final" name="hora_final" required />
+      </div>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("cadastroEleicao")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Evita o envio do formulário
+          const nome = document.getElementById("nome").value;
+          const data = document.getElementById("data").value;
+          const local = document.getElementById("local").value;
+          const horaInicial = document.getElementById("hora_inicial").value;
+          const horaFinal = document.getElementById("hora_final").value;
+
+          // Cria um objeto com os dados da eleição
+          const eleicaoData = {
+            nome: nome,
+            data: data,
+            local: local,
+            hora_inicial: horaInicial,
+            hora_final: horaFinal,
+          };
+
+          // Envia os dados para a API backend via fetch ou XMLHttpRequest
+          fetch("http://localhost:5000/api/eleicoes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(eleicaoData),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              alert("Eleição cadastrada com sucesso!");
+              // Limpar o formulário após a submissão
+              document.getElementById("cadastroEleicao").reset();
+            })
+            .catch((error) => {
+              console.error("Erro ao cadastrar eleição:", error);
+              alert(
+                "Ocorreu um erro ao cadastrar a eleição. Por favor, tente novamente."
+              );
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liberação de Eleitor para Votação</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Liberação de Eleitor para Votação</h1>
+    <form id="liberarEleitorForm">
+      <label for="cpfEleitor">CPF do Eleitor:</label>
+      <input type="text" id="cpfEleitor" name="cpfEleitor" required />
+
+      <button type="submit">Liberar para Votação</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("liberarEleitorForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const cpfEleitor = document.getElementById("cpfEleitor").value;
+
+          fetch("http://localhost:5000/api/eleitores/liberar", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ cpf: cpfEleitor }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert("Eleitor liberado para votação!");
+              // Clear the form
+              document.getElementById("liberarEleitorForm").reset();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Erro ao liberar o eleitor.");
+            });
+        });
+    </script>
+  </body>
+</html>

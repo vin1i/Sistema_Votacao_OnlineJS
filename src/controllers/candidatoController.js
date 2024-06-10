@@ -1,8 +1,8 @@
 const Candidato = require('../models/candidatos');
 
 exports.create = (req, res) => {
-    const { nome, cpf, endereco } = req.body;
-    Candidato.create({ nome, cpf, endereco }, (err, id) => {
+    const { nome, cpf, endereco, email, senha } = req.body;
+    Candidato.create({ nome, cpf, endereco, email, senha }, (err, id) => {
         if (err) {
             console.error('Erro ao cadastrar candidato:', err);
             return res.status(500).send({ error: 'Erro ao cadastrar candidato' });

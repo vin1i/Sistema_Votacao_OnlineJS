@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Votação</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Votação</h1>
+    <form id="votacaoForm">
+      <div id="opcoesVotacao">
+        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
+      </div>
+
+      <button type="submit">Confirmar Voto</button>
+    </form>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch the list of chapas and candidates from the backend
+        fetch("http://localhost:5000/api/chapas/candidatos")
+          .then((response) => response.json())
+          .then((data) => {
+            const opcoesVotacaoDiv = document.getElementById("opcoesVotacao");
+            data.forEach((chapa) => {
+              const chapaDiv = document.createElement("div");
+              chapaDiv.innerHTML = `<h3>${chapa.nome}</h3>`;
+              chapa.candidatos.forEach((candidato) => {
+                const candidatoLabel = document.createElement("label");
+                candidatoLabel.innerHTML = `
+                                <input type="radio" name="candidato" value="${candidato.id}" required>
+                                ${candidato.nome}
+                            `;
+                chapaDiv.appendChild(candidatoLabel);
+                chapaDiv.appendChild(document.createElement("br"));
+              });
+              opcoesVotacaoDiv.appendChild(chapaDiv);
+            });
+          });
+
+        // Handle form submission
+        document
+          .getElementById("votacaoForm")
+          .addEventListener("submit", function (event) {
+            event.preventDefault();
+            const candidatoId = document.querySelector(
+              'input[name="candidato"]:checked'
+            ).value;
+
+            fetch("http://localhost:5000/api/votos", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ candidato_id: candidatoId }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                alert("Voto registrado com sucesso!");
+                // Clear the form
+                document.getElementById("votacaoForm").reset();
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+                alert("Erro ao registrar o voto.");
+              });
+          });
+      });
+    </script>
+  </body>
+</html>
