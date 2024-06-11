@@ -1,28 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liberação de Eleitor para Votação</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Liberação de Voto</title>
+    <link rel="stylesheet" href="../public/Css/Style.css" />
   </head>
   <body>
-    <h1>Liberação de Eleitor para Votação</h1>
-    <form id="liberarEleitorForm">
-      <label for="cpfEleitor">CPF do Eleitor:</label>
-      <input type="text" id="cpfEleitor" name="cpfEleitor" required />
+    <div class="container">
+      <h2>Liberação de Voto</h2>
+      <form id="liberacaoForm">
+        <label for="cpfEleitor">CPF do Eleitor:</label>
+        <input type="text" id="cpfEleitor" required /><br />
 
-      <button type="submit">Liberar para Votação</button>
-    </form>
-
+        <button type="submit">Confirmar Liberação</button>
+      </form>
+      <nav>
+        <a href="admin.html">Voltar</a>
+      </nav>
+    </div>
     <script>
       document
-        .getElementById("liberarEleitorForm")
+        .getElementById("liberacaoForm")
         .addEventListener("submit", function (event) {
-          event.preventDefault();
+          event.preventDefault(); // Evita o comportamento padrão do formulário
+
           const cpfEleitor = document.getElementById("cpfEleitor").value;
 
-          fetch("http://localhost:5000/api/eleitores/liberar", {
+          fetch("http://localhost:5000/api/liberar-eleitor", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -31,13 +36,13 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              alert("Eleitor liberado para votação!");
-              // Clear the form
-              document.getElementById("liberarEleitorForm").reset();
+              alert("Eleitor liberado com sucesso!");
             })
             .catch((error) => {
-              console.error("Error:", error);
-              alert("Erro ao liberar o eleitor.");
+              console.error("Erro ao liberar eleitor:", error);
+              alert(
+                "Erro ao liberar eleitor. Verifique o console para mais informações."
+              );
             });
         });
     </script>

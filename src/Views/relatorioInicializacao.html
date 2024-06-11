@@ -16,6 +16,68 @@
         <a href="admin.html">Voltar</a>
       </nav>
     </div>
-    <script src="../public/scripts/scriptsRel.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.10.0/dist/pdf-lib.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        fetch("http://localhost:5000/api/eleicoes")
+          .then((response) => response.json())
+          .then((data) => {
+            const eleicaoSelect = document.getElementById(
+              "eleicaoInicializacao"
+            );
+            data.forEach((eleicao) => {
+              const option = document.createElement("option");
+              option.value = eleicao.id;
+              option.text = eleicao.nome;
+              eleicaoSelect.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+
+      async function generateInitialReport() {
+        const { PDFDocument, rgb } = PDFLib;
+
+        const eleicao = document.getElementById("eleicaoInicializacao").value;
+        const dataHoraAbertura = new Date().toLocaleString();
+
+        const pdfDoc = await PDFDocument.create();
+        const page = pdfDoc.addPage();
+
+        page.drawText("Relatório de Inicialização da Votação", {
+          x: 50,
+          y: 700,
+          size: 24,
+          color: rgb(0, 0, 0),
+        });
+
+        page.drawText(`Eleição: ${eleicao}`, {
+          x: 50,
+          y: 650,
+          size: 18,
+          color: rgb(0, 0, 0),
+        });
+
+        page.drawText(`Data e Hora de Abertura: ${dataHoraAbertura}`, {
+          x: 50,
+          y: 600,
+          size: 18,
+          color: rgb(0, 0, 0),
+        });
+
+        // Adicione mais informações ao relatório conforme necessário
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "relatorio_inicializacao_votacao.pdf";
+        link.click();
+      }
+    </script>
   </body>
 </html>

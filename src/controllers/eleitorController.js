@@ -29,27 +29,20 @@ exports.getAll = (req, res) => {
 };
 
 
-//CÓDIGO ABAIXO FOI FEITO ANTES DA AUTENTICAÇÃO DE TOKEN, CASO ELE SEJA NECESSÁRIO!
+exports.liberarEleitor = (req, res) => {
+    const { cpf } = req.body;
 
-// const Eleitor = require('../models/eleitor');
+    const query = 'UPDATE Eleitores SET liberado = ? WHERE cpf = ?';
+    connection.query(query, [true, cpf], (err, result) => {
+        if (err) {
+            console.error('Erro ao liberar eleitor:', err);
+            return res.status(500).send({ error: 'Erro ao liberar eleitor' });
+        }
 
-// exports.create = (req, res) => {
-//     const { nome, cpf, email, senha } = req.body;
-//     Eleitor.create({ nome, cpf, email, senha }, (err, id) => {
-//         if (err) {
-//             return res.status(500).send(err);
-//         }
-//         res.status(201).send({ id });
-//     });
-// };
+        if (result.affectedRows === 0) {
+            return res.status(404).send({ error: 'Eleitor não encontrado' });
+        }
 
-// exports.getAll = (req, res) => {
-//     Eleitor.findAll((err, results) => {
-//         if (err) {
-//             return res.status(500).send(err);
-//         }
-//         res.status(200).send(results);
-//     });
-// };
-
-// // Adicione outros métodos conforme necessário (ex. getById, update, delete)
+        res.status(200).send({ message: 'Eleitor liberado com sucesso' });
+    });
+};

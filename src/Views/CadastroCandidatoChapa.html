@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Candidato na Chapa</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="" />
   </head>
   <body>
     <h1>Cadastro de Candidato na Chapa</h1>
@@ -40,19 +40,29 @@
               option.textContent = chapa.nome;
               chapaSelect.appendChild(option);
             });
+          })
+          .catch((error) => {
+            console.error("Erro ao obter as chapas:", error);
           });
 
         // Fetch the list of cargos from the backend
         fetch("http://localhost:5000/api/cargos")
           .then((response) => response.json())
           .then((data) => {
+            console.log("Cargos recebidos:", data); // Adicione esta linha para depuração
             const cargoSelect = document.getElementById("cargo");
             data.forEach((cargo) => {
               const option = document.createElement("option");
               option.value = cargo.id;
-              option.textContent = cargo.nome;
+              option.textContent = cargo.cargo;
               cargoSelect.appendChild(option);
             });
+            if (cargoSelect.options.length === 0) {
+              console.warn("Nenhum cargo encontrado");
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao obter os cargos:", error);
           });
 
         // Fetch the list of candidatos from the backend
@@ -66,6 +76,9 @@
               option.textContent = candidato.nome;
               candidatoSelect.appendChild(option);
             });
+          })
+          .catch((error) => {
+            console.error("Erro ao obter os candidatos:", error);
           });
 
         // Handle form submission
@@ -77,7 +90,9 @@
             const cargo = document.getElementById("cargo").value;
             const candidato = document.getElementById("candidato").value;
 
-            fetch("http://localhost:5000/api/candidatoschapas", {
+            console.log("Dados enviados:", { chapa, cargo, candidato }); // Verificar os dados enviados
+
+            fetch("http://localhost:5000/api/candidatoChapas", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -90,12 +105,20 @@
             })
               .then((response) => response.json())
               .then((data) => {
-                alert("Candidato cadastrado na chapa com sucesso!");
-                // Clear the form
-                document.getElementById("candidatoChapaForm").reset();
+                if (data.error) {
+                  console.error(
+                    "Erro ao cadastrar candidato na chapa:",
+                    data.error
+                  );
+                  alert("Erro ao cadastrar candidato na chapa.");
+                } else {
+                  alert("Candidato cadastrado na chapa com sucesso!");
+                  // Clear the form
+                  document.getElementById("candidatoChapaForm").reset();
+                }
               })
               .catch((error) => {
-                console.error("Error:", error);
+                console.error("Erro ao cadastrar candidato na chapa:", error);
                 alert("Erro ao cadastrar candidato na chapa.");
               });
           });

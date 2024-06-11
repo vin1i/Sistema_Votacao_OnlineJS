@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Início de Votação</title>
+    <title>Início e Fim de Votação</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Início de Votação</h1>
-    <form id="inicioVotacaoForm">
+    <h1>Início e Fim de Votação</h1>
+    <form id="votacaoForm">
       <label for="eleicao">Eleição:</label>
       <select id="eleicao" name="eleicao" required>
         <!-- As opções serão preenchidas dinamicamente via JavaScript -->
@@ -22,7 +22,15 @@
         required
       />
 
-      <button type="submit">Iniciar Votação</button>
+      <label for="dataHoraFim">Data e Hora de Fim:</label>
+      <input
+        type="datetime-local"
+        id="dataHoraFim"
+        name="dataHoraFim"
+        required
+      />
+
+      <button type="submit">Registrar Votação</button>
     </form>
 
     <script>
@@ -42,32 +50,34 @@
 
         // Handle form submission
         document
-          .getElementById("inicioVotacaoForm")
+          .getElementById("votacaoForm")
           .addEventListener("submit", function (event) {
             event.preventDefault();
             const eleicao = document.getElementById("eleicao").value;
             const dataHoraInicio =
               document.getElementById("dataHoraInicio").value;
+            const dataHoraFim = document.getElementById("dataHoraFim").value;
 
-            fetch("http://localhost:5000/api/votacoes/iniciar", {
+            fetch("http://localhost:5000/api/votacoes", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 eleicao_id: eleicao,
-                data_hora_inicio: dataHoraInicio,
+                data_inicio: dataHoraInicio,
+                data_fim: dataHoraFim,
               }),
             })
               .then((response) => response.json())
               .then((data) => {
-                alert("Votação iniciada com sucesso!");
+                alert("Votação registrada com sucesso!");
                 // Clear the form
-                document.getElementById("inicioVotacaoForm").reset();
+                document.getElementById("votacaoForm").reset();
               })
               .catch((error) => {
                 console.error("Error:", error);
-                alert("Erro ao iniciar a votação.");
+                alert("Erro ao registrar a votação.");
               });
           });
       });

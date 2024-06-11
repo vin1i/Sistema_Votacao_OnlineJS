@@ -16,12 +16,12 @@
     <form id="formCadastroCargos">
       <fieldset class="grupo">
         <div class="campo">
-          <label for="nome">Nome do cargo</label>
+          <label for="nome">Nome do cargo:</label>
           <input type="text" name="nome" id="nome" required />
         </div>
 
         <div class="campo">
-          <label for="eleicao"><strong>Eleição</strong></label>
+          <label for="eleicao"><strong>Eleição:</strong></label>
           <select id="eleicao" name="eleicao" required>
             <option selected disabled value="">Selecione a Eleição</option>
             <!-- As opções de eleições serão preenchidas dinamicamente pelo sistema -->
@@ -35,22 +35,17 @@
     <script>
       // Função para preencher dinamicamente o dropdown de eleições
       function preencherEleicoes() {
-        // Fazer uma requisição GET para obter as eleições do banco de dados
         fetch("http://localhost:5000/api/eleicoes")
           .then((response) => response.json())
           .then((data) => {
             const eleicaoSelect = document.getElementById("eleicao");
 
-            // Limpar as opções existentes
-            eleicaoSelect.innerHTML = "";
-
-            // Adicionar uma opção padrão (se necessário)
+            eleicaoSelect.innerHTML = ""; // Limpar as opções existentes
             const defaultOption = document.createElement("option");
             defaultOption.text = "Selecione uma eleição";
             defaultOption.value = "";
             eleicaoSelect.appendChild(defaultOption);
 
-            // Preencher o dropdown com as eleições disponíveis
             data.forEach((eleicao) => {
               const option = document.createElement("option");
               option.text = eleicao.nome;
@@ -74,12 +69,33 @@
           const nomeCargo = document.getElementById("nome").value;
           const eleicaoId = document.getElementById("eleicao").value;
 
-          // Aqui você enviaria os dados para o servidor (por exemplo, via AJAX)
+          // Verifique se os valores estão sendo capturados corretamente
           console.log("Nome do Cargo:", nomeCargo);
           console.log("ID da Eleição:", eleicaoId);
 
-          // Limpar o formulário após a submissão
-          this.reset();
+          // Enviar os dados para o servidor via fetch
+          fetch("http://localhost:5000/api/cargos", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ cargo: nomeCargo, eleicao_id: eleicaoId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                console.error("Erro ao cadastrar cargo:", data.error);
+                alert("Erro ao cadastrar cargo.");
+              } else {
+                console.log("Sucesso:", data);
+                alert("Cargo cadastrado com sucesso!");
+                document.getElementById("formCadastroCargos").reset();
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao cadastrar cargo:", error);
+              alert("Erro ao cadastrar cargo.");
+            });
         });
     </script>
   </body>
