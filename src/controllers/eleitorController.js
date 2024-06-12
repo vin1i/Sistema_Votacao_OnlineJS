@@ -29,20 +29,29 @@ exports.getAll = (req, res) => {
 };
 
 
+
 exports.liberarEleitor = (req, res) => {
     const { cpf } = req.body;
 
-    const query = 'UPDATE Eleitores SET liberado = ? WHERE cpf = ?';
-    connection.query(query, [true, cpf], (err, result) => {
+    // Aqui estamos chamando o método findByCpf do model Eleitor para buscar o eleitor pelo CPF
+    Eleitor.findByCpf(cpf, (err, eleitor) => {
         if (err) {
-            console.error('Erro ao liberar eleitor:', err);
-            return res.status(500).send({ error: 'Erro ao liberar eleitor' });
+            console.error('Erro ao buscar eleitor:', err);
+            return res.status(500).send({ error: 'Erro ao buscar eleitor' });
         }
 
-        if (result.affectedRows === 0) {
+        if (!eleitor) {
             return res.status(404).send({ error: 'Eleitor não encontrado' });
         }
 
-        res.status(200).send({ message: 'Eleitor liberado com sucesso' });
+        // Atualiza o status de liberação do eleitor no banco de dados
+        Eleitor.updateLiberado(eleitor.id, true, (err) => {
+            if (err) {
+                console.error('Erro ao liberar eleitor:', err);
+                return res.status(500).send({ error: 'Erro ao liberar eleitor' });
+            }
+
+            res.status(200).send({ message: 'Eleitor liberado com sucesso' });
+        });
     });
 };

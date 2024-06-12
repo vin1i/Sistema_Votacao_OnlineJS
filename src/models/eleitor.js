@@ -23,13 +23,17 @@ const Eleitor = {
             callback(null, results[0]);
         });
     },
+    updateLiberado: (id, liberado, callback) => {
+        const query = 'UPDATE Eleitores SET liberado = ? WHERE id = ?';
+        connection.query(query, [liberado, id], (err, result) => {
+            if (err) return callback(err);
+            callback(null);
+        });
+    },
     // Outros métodos conforme necessário
 };
 
 module.exports = Eleitor;
-
-
-
 
 
 

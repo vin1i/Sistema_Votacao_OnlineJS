@@ -33,7 +33,6 @@ router.post('/eleitores', eleitorController.create);
 router.get('/eleitores', eleitorController.getAll);
 router.post('/liberar-eleitor', eleitorController.liberarEleitor);
 router.get('/liberar-eleitor', eleitorController.liberarEleitor);
-
 // Rotas para CandidatoChapa
 router.post('/candidatoChapas', /*authenticateToken,*/ candidatoChapaController.create);
 router.get('/candidatoChapas', /*authenticateToken,*/ candidatoChapaController.getAll);
