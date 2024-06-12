@@ -1,69 +1,144 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Votação</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../public/Css/Style.css" />
   </head>
   <body>
-    <h1>Votação</h1>
-    <form id="votacaoForm">
-      <div id="opcoesVotacao">
-        <!-- As opções serão preenchidas dinamicamente via JavaScript -->
-      </div>
+    <div class="container">
+      <h2>Votação</h2>
+      <form id="votacaoForm">
+        <label for="eleicao">Selecione a Eleição:</label>
+        <select id="eleicao" required>
+          <option value="">Selecione uma eleição</option>
+          <!-- Opções de eleições serão adicionadas dinamicamente aqui --></select
+        ><br />
 
-      <button type="submit">Confirmar Voto</button>
-    </form>
+        <label for="candidato">Selecione o Candidato:</label>
+        <select id="candidato" required>
+          <option value="">Selecione um candidato</option>
+          <!-- Opções de candidatos serão adicionadas dinamicamente aqui --></select
+        ><br />
+
+        <label for="eleitor">Selecione o Eleitor:</label>
+        <select id="eleitor" required>
+          <option value="">Selecione um eleitor</option>
+          <!-- Opções de eleitores serão adicionadas dinamicamente aqui --></select
+        ><br />
+
+        <button type="submit">Votar</button>
+      </form>
+      <nav>
+        <a href="eleitor.html">Voltar</a>
+      </nav>
+    </div>
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Fetch the list of chapas and candidates from the backend
-        fetch("http://localhost:5000/api/chapas/candidatos")
+        // Fetch elections
+        fetch("http://localhost:5000/api/eleicoes")
           .then((response) => response.json())
           .then((data) => {
-            const opcoesVotacaoDiv = document.getElementById("opcoesVotacao");
-            data.forEach((chapa) => {
-              const chapaDiv = document.createElement("div");
-              chapaDiv.innerHTML = `<h3>${chapa.nome}</h3>`;
-              chapa.candidatos.forEach((candidato) => {
-                const candidatoLabel = document.createElement("label");
-                candidatoLabel.innerHTML = `
-                                <input type="radio" name="candidato" value="${candidato.id}" required>
-                                ${candidato.nome}
-                            `;
-                chapaDiv.appendChild(candidatoLabel);
-                chapaDiv.appendChild(document.createElement("br"));
-              });
-              opcoesVotacaoDiv.appendChild(chapaDiv);
+            const eleicaoSelect = document.getElementById("eleicao");
+            data.forEach((eleicao) => {
+              const option = document.createElement("option");
+              option.value = eleicao.id;
+              option.textContent = eleicao.nome;
+              eleicaoSelect.appendChild(option);
             });
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar eleições:", error);
+            alert(
+              "Erro ao buscar eleições. Verifique o console para mais informações."
+            );
           });
 
-        // Handle form submission
+        // Fetch candidates when an election is selected
+        document
+          .getElementById("eleicao")
+          .addEventListener("change", function () {
+            const eleicaoId = this.value;
+            const candidatoSelect = document.getElementById("candidato");
+            candidatoSelect.innerHTML =
+              '<option value="">Selecione um candidato</option>';
+
+            if (eleicaoId) {
+              fetch(`http://localhost:5000/api/candidatos/eleicao/${eleicaoId}`)
+                .then((response) => response.json())
+                .then((data) => {
+                  data.forEach((candidato) => {
+                    const option = document.createElement("option");
+                    option.value = candidato.id;
+                    option.textContent = candidato.nome;
+                    candidatoSelect.appendChild(option);
+                  });
+                })
+                .catch((error) => {
+                  console.error("Erro ao buscar candidatos:", error);
+                  alert(
+                    "Erro ao buscar candidatos. Verifique o console para mais informações."
+                  );
+                });
+            }
+          });
+
+        // Fetch voters
+        fetch("http://localhost:5000/api/eleitores")
+          .then((response) => response.json())
+          .then((data) => {
+            const eleitorSelect = document.getElementById("eleitor");
+            data.forEach((eleitor) => {
+              const option = document.createElement("option");
+              option.value = eleitor.id;
+              option.textContent = eleitor.nome;
+              eleitorSelect.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar eleitores:", error);
+            alert(
+              "Erro ao buscar eleitores. Verifique o console para mais informações."
+            );
+          });
+
+        // Handle vote submission
         document
           .getElementById("votacaoForm")
           .addEventListener("submit", function (event) {
             event.preventDefault();
-            const candidatoId = document.querySelector(
-              'input[name="candidato"]:checked'
-            ).value;
+
+            const eleitorId = document.getElementById("eleitor").value;
+            const eleicaoId = document.getElementById("eleicao").value;
+            const candidatoId = document.getElementById("candidato").value;
 
             fetch("http://localhost:5000/api/votos", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ candidato_id: candidatoId }),
+              body: JSON.stringify({
+                eleitor_id: eleitorId,
+                eleicao_id: eleicaoId,
+                candidato_id: candidatoId,
+              }),
             })
-              .then((response) => response.json())
+              .then((response) => {
+                if (response.ok) {
+                  return response.json();
+                }
+                throw new Error("Erro ao registrar voto");
+              })
               .then((data) => {
                 alert("Voto registrado com sucesso!");
-                // Clear the form
-                document.getElementById("votacaoForm").reset();
               })
               .catch((error) => {
-                console.error("Error:", error);
-                alert("Erro ao registrar o voto.");
+                console.error("Erro ao registrar voto:", error);
+                alert(
+                  "Erro ao registrar voto. Verifique o console para mais informações."
+                );
               });
           });
       });

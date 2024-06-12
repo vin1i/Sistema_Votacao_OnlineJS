@@ -15,7 +15,21 @@ const Candidato = {
             callback(null, results);
         });
     },
-    // Outros métodos conforme necessário (ex. findById, update, delete)
+    findByEleicaoId: (eleicaoId, callback) => {
+        const query = `
+            SELECT c.*
+            FROM Candidatos c
+            JOIN CandidatosEleicoes ce ON c.id = ce.candidato_id
+            WHERE ce.eleicao_id = ?
+        `;
+        connection.query(query, [eleicaoId], (err, results) => {
+            if (err) return callback(err);
+            callback(null, results);
+        });
+    },
+    // Outros métodos conforme necessário
 };
+
+
 
 module.exports = Candidato;

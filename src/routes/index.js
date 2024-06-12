@@ -11,10 +11,13 @@ const votacaoController = require('../controllers/votacaoController');
 const votoController = require('../controllers/votoController');
 const authController = require('../controllers/authController');
 const authenticateToken = require('../middlewares/authenticateToken');
+const CandidatoEleicao = require('../models/candidatoEleicao');
+const candidatoEleicaoController = require('../controllers/candidatoEleicaoController');
 
 // Rotas para Candidatos
 router.post('/candidatos',/* authenticateToken,*/ candidatoController.create);
 router.get('/candidatos',/* authenticateToken,*/ candidatoController.getAll);
+router.get('/candidatos/eleicao/:eleicaoId', candidatoController.getByEleicaoId);
 
 // Rotas para Cargos
 router.post('/cargos', /*authenticateToken,*/ cargoController.create);
@@ -44,8 +47,13 @@ router.get('/votacoes', /*authenticateToken,*/ votacaoController.getAll);
 // Rotas para Votos
 router.post('/votos', /*authenticateToken,*/ votoController.create);
 router.get('/votos', /*authenticateToken,*/ votoController.getAll);
-
+router.get('/votos/eleicao/:eleicaoId', votoController.getVotersByEleicaoId);
+router.get('/eleicoes/:eleicaoId/totalEleitores', votoController.getTotalEleitoresByEleicaoId);
 // Rota para Login
 router.post('/login', authController.login);
+
+
+router.post('/associar-candidato-eleicao', candidatoEleicaoController.associarCandidatoEleicao);
+
 
 module.exports = router;

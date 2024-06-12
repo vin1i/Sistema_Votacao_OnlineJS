@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Associar Candidatos à Eleição</title>
+    <link rel="stylesheet" href="../public/Css/Style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Associar Candidatos à Eleição</h2>
+      <form id="associarForm">
+        <label for="eleicaoId">Eleição:</label>
+        <select id="eleicaoId" required>
+          <option value="">Selecione uma eleição</option></select
+        ><br />
+
+        <label for="candidatoId">Candidato:</label>
+        <select id="candidatoId" required>
+          <option value="">Selecione um candidato</option></select
+        ><br />
+
+        <button type="submit">Associar</button>
+      </form>
+      <nav>
+        <a href="admin.html">Voltar</a>
+      </nav>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fetch and populate the dropdowns
+        fetch("http://localhost:5000/api/eleicoes")
+          .then((response) => response.json())
+          .then((data) => {
+            const eleicaoDropdown = document.getElementById("eleicaoId");
+            data.forEach((eleicao) => {
+              const option = document.createElement("option");
+              option.value = eleicao.id;
+              option.text = eleicao.nome;
+              eleicaoDropdown.add(option);
+            });
+          })
+          .catch((error) => console.error("Erro ao buscar eleições:", error));
+
+        fetch("http://localhost:5000/api/candidatos")
+          .then((response) => response.json())
+          .then((data) => {
+            const candidatoDropdown = document.getElementById("candidatoId");
+            data.forEach((candidato) => {
+              const option = document.createElement("option");
+              option.value = candidato.id;
+              option.text = candidato.nome;
+              candidatoDropdown.add(option);
+            });
+          })
+          .catch((error) => console.error("Erro ao buscar candidatos:", error));
+      });
+
+      document
+        .getElementById("associarForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const eleicaoId = document.getElementById("eleicaoId").value;
+          const candidatoId = document.getElementById("candidatoId").value;
+
+          fetch("http://localhost:5000/api/associar-candidato-eleicao", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ eleicaoId, candidatoId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                alert("Erro ao associar candidato: " + data.error);
+              } else {
+                alert("Candidato associado com sucesso!");
+              }
+            })
+            .catch((error) => {
+              console.error("Erro ao associar candidato:", error);
+              alert(
+                "Erro ao associar candidato. Verifique o console para mais informações."
+              );
+            });
+        });
+    </script>
+  </body>
+</html>

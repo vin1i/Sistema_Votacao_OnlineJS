@@ -20,3 +20,14 @@ exports.getAll = (req, res) => {
         res.status(200).send(results);
     });
 };
+
+exports.getByEleicaoId = (req, res) => {
+    const eleicaoId = req.params.eleicaoId;
+    Candidato.findByEleicaoId(eleicaoId, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar candidatos por eleição:', err);
+            return res.status(500).send({ error: 'Erro ao buscar candidatos por eleição' });
+        }
+        res.status(200).send(results);
+    });
+};
