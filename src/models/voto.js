@@ -72,6 +72,12 @@ const Voto = {
             callback(null, result[0]);
         });
     },
+
+
+
+
+
+
 };
 
 

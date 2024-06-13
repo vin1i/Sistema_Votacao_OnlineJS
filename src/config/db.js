@@ -4,7 +4,7 @@ const connection = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
     password: 'admin',
-    database: 'sistemavotacao',
+    database: 'testevote',
     port: 3333
 });
 

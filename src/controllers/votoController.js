@@ -1,24 +1,4 @@
 
-// const Voto = require('../models/voto');
-
-// exports.create = (req, res) => {
-//     const { eleitor_id, candidato_id, eleicao_id } = req.body;
-//     Voto.createOrUpdate({ eleitor_id, candidato_id, eleicao_id }, (err, id) => {
-//         if (err) {
-//             return res.status(500).send(err);
-//         }
-//         res.status(201).send({ id });
-//     });
-// };
-
-// exports.getAll = (req, res) => {
-//     Voto.findAll((err, results) => {
-//         if (err) {
-//             return res.status(500).send(err);
-//         }
-//         res.status(200).send(results);
-//     });
-// };const Voto = require('../models/voto');
 const Voto = require('../models/voto');
 const connection = require('../config/db');
 exports.create = (req, res) => {
@@ -72,3 +52,4 @@ exports.getTotalEleitoresByEleicaoId = (req, res) => {
         res.status(200).send(result);
     });
 };
+
