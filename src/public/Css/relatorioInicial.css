@@ -8,20 +8,7 @@ body {
     margin: 0;
   }
   
-  #titulo {
-    text-align: center;
-    color: #333;
-    margin-right: 10px;
-    margin-bottom: 10px; 
-  }
-  
-  #subtitulo {
-    text-align: center;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  #formCadastroCargos {
+  .container {
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -30,19 +17,19 @@ body {
     text-align: center; 
   }
   
-  .campo {
-    margin-bottom: 15px;
-    text-align: left; /
-  }
-  
-  .campo label {
-    display: block;
-    margin-bottom: 5px;
+  h2 {
     color: #333;
+    margin-bottom: 20px;
   }
   
-  .campo input[type="text"],
-  .campo select {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    text-align: left;
+  }
+  
+  select {
     width: calc(100% - 20px); 
     padding: 10px;
     margin-bottom: 10px;
@@ -51,8 +38,8 @@ body {
     box-sizing: border-box;
   }
   
-  .botao {
-    width: 100%;
+  button {
+    width: calc(100% - 20px); 
     padding: 10px;
     background-color: #000000;
     color: white;
@@ -62,7 +49,21 @@ body {
     margin-top: 10px; 
   }
   
-  .botao:hover {
+  button:hover {
     background-color: #333;
+  }
+  
+  nav {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  nav a {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
   }
   

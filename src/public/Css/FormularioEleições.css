@@ -1,98 +1,69 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-#titulo{
-    font-family: sans-serif;
-    color: #380B61;
-    text-align: center;
-    margin-right: 60%;
-}
-
-#subtitulo {
-    font-family: sans-serif;
-    color: #380B61;
-    margin-top: 2%;
-    text-align: center;
-    margin-right: 60%;
-}
-
-fieldset {
-    border: 0;
-}
-
 body {
-    background-color: #F0F8FF;
-    font-family: sans-serif;
-    font-size: 1.1em;
-    margin-left: 36%;
-    margin-top: 2%;
-    justify-content: center;
-}
-
-input, select, textarea, button {
-    border-radius: 5px;
-    padding: 0.2em;
-    border: 1px solid #59429d;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-.campo {
-    margin-bottom: 1em;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     display: flex;
-    flex-direction: column;
-}
-
-.campo label{
-    margin-bottom: 0.2em;
-    color: #59429d;
-    margin-left: 4em;
-}
-
-/* Removido o width para que todas as caixas de texto tenham o mesmo tamanho */
-.campo input[type="text"], .campo input[type="email"], .campo select, .campo textarea, .campo input[type="date"] {
-    margin-left: 5em;
-    width: 200px; /* Ajuste a largura conforme necessário */
-}
-
-.campo input[type="text"][name="cep"]::after {
-    content: "-";
-    margin-left: 5px;
-}
-
-.campo select option {
-    padding-right: 1em;
-}
-
-.campo input:focus, .campo select:focus, .campo textarea:focus {
-    background: #E0E0F8;
-}
-
-.botao {
-    font-size: 1.2em;
-    background: #59429d;
-    border: 0;
-    margin-bottom: 1em;
-    color: #ffffff;
-    padding: 0.2em;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-    position: absolute;
-    right: 48%;
-    margin-top: 0.2em;
-}
-
-.botao:hover {
-    background: #4c4b4d;
-    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.2);
-    text-shadow: none;
-}
-
-.botao, select {
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  #titulo {
+    text-align: center;
+    color: #333;
+    margin-right: 10px;
+    margin-bottom: 20px;
+  }
+  
+  #subtitulo {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+  }
+  
+  #cadastroEleicao {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center; 
+  }
+  
+  #cadastroEleicao .campo {
+    margin-bottom: 15px;
+    text-align: left; 
+  }
+  
+  #cadastroEleicao label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  #cadastroEleicao input[type="text"],
+  #cadastroEleicao input[type="date"],
+  #cadastroEleicao input[type="time"] {
+    width: calc(100% - 20px); 
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  #cadastroEleicao button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-}
-
-.check {
-    display: inline-block;
-}
+    margin-top: 10px; 
+  }
+  
+  #cadastroEleicao button[type="submit"]:hover {
+    background-color: #333;
+  }
+  
