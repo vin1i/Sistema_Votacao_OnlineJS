@@ -16,7 +16,7 @@ Este projeto é um sistema de votação online para condomínios, desenvolvido e
 ## Estrutura do Projeto
 - **Views**: Diretório onde estão localizadas as telas do sistema.
 - **Routes**: Diretório onde estão definidas as rotas do sistema.
-- **MySQL**: Diretório onde está o código script do banco de dados para o projeto, incluindo um arquivo .sql que pode ser aberto diretamente no MySQL, permitindo o usuário configurar o banco de dados do sistema no seu próprio MySQL.
+- **MySQL**: Diretório onde está o código script do banco de dados para o projeto, incluindo um arquivo .sql que pode ser aberto diretamente no MySQL, permitindo ao usuário configurar o banco de dados do sistema no seu próprio MySQL.
 
 ## Como Iniciar
 Para iniciar o projeto, siga os passos abaixo:
@@ -27,6 +27,8 @@ Para iniciar o projeto, siga os passos abaixo:
     ```
 2. Abra a tela `admin.html`, que está dentro do diretório `src/Views`, no navegador. Esta tela contém todas as outras telas de cadastro e relatório do sistema.
 
-As rotas estão configuradas para rodar na porta `localhost 5000`.
+As rotas estão configuradas para rodar na porta `localhost:5000`.
+
+**Nota importante:** Dentro do diretório `src/config/db.js`, a porta do MySQL está configurada. Certifique-se de que você conhece a porta do seu MySQL e a insira no código conforme necessário.
 
 Este projeto foi desenvolvido como parte de um trabalho acadêmico, seguindo as diretrizes fornecidas pelo docente.
